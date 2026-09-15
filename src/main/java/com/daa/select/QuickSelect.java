@@ -46,35 +46,33 @@ public class QuickSelect {
 
         Random rnd = new Random();
         metrics.startTimer();
+        int result = quickSelect(a, 0, a.length - 1, k, metrics, rnd);
+        metrics.stopTimer();
+        return result;
+    }
 
-        int left = 0;
-        int right = a.length - 1;
-
-        while (left <= right) {
-            if (left == right) {
-                metrics.stopTimer();
+    private static int quickSelect(int[] a, int left, int right, int k, Metrics metrics, Random rnd) {
+        metrics.enterRecursion();
+        try {
+            if (left >= right) {
                 return a[left];
             }
 
-            metrics.enterRecursion();
-            // Reuse Partition from QuickSort
+            // Reuse Partition: Use the exact same partition method as in QuickSort
             int[] bounds = QuickSort.partition3Way(a, left, right, metrics, rnd);
             int lt = bounds[0];
             int gt = bounds[1];
-            metrics.exitRecursion();
 
-            // One Side Only: continue only into the section containing k
+            // One Side Only: continue only in the part that contains position k
             if (k >= lt && k <= gt) {
-                metrics.stopTimer();
                 return a[k]; // Equal elements range contains k
             } else if (k < lt) {
-                right = lt - 1;
+                return quickSelect(a, left, lt - 1, k, metrics, rnd);
             } else {
-                left = gt + 1;
+                return quickSelect(a, gt + 1, right, k, metrics, rnd);
             }
+        } finally {
+            metrics.exitRecursion();
         }
-
-        metrics.stopTimer();
-        return a[left];
     }
 }
