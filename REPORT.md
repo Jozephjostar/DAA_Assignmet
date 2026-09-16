@@ -95,42 +95,42 @@ The benchmark was executed using OpenJDK 21 on macOS. For every configuration, e
 
 | Algorithm | Input Type | Array Size ($n$) | Median Time (ms) | Comparisons | Max Recursion Depth |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **MergeSort** | `random` | 1,000 | 0.049 | 9,643 | 7 |
-| **MergeSort** | `random` | 10,000 | 0.903 | 127,047 | 10 |
-| **MergeSort** | `random` | 100,000 | 12.378 | 1,641,332 | 13 |
-| **MergeSort** | `random` | 1,000,000 | 136.258 | 19,886,841 | 17 |
-| **MergeSort** | `sorted` | 1,000 | 0.016 | 4,236 | 7 |
-| **MergeSort** | `sorted` | 10,000 | 0.209 | 59,248 | 10 |
-| **MergeSort** | `sorted` | 100,000 | 2.778 | 744,016 | 13 |
-| **MergeSort** | `sorted` | 1,000,000 | 33.488 | 9,071,040 | 17 |
-| **MergeSort** | `duplicates` | 1,000 | 0.029 | 9,146 | 7 |
-| **MergeSort** | `duplicates` | 10,000 | 0.500 | 121,227 | 10 |
-| **MergeSort** | `duplicates` | 100,000 | 5.865 | 1,562,199 | 13 |
-| **MergeSort** | `duplicates` | 1,000,000 | 65.806 | 18,923,945 | 17 |
-| **QuickSort** | `random` | 1,000 | 0.080 | 10,595 | 7 |
-| **QuickSort** | `random` | 10,000 | 1.012 | 162,380 | 8 |
-| **QuickSort** | `random` | 100,000 | 12.311 | 1,999,549 | 10 |
-| **QuickSort** | `random` | 1,000,000 | 147.739 | 24,994,227 | 13 |
-| **QuickSort** | `sorted` | 1,000 | 0.052 | 10,599 | 7 |
-| **QuickSort** | `sorted` | 10,000 | 0.614 | 156,538 | 8 |
-| **QuickSort** | `sorted` | 100,000 | 7.257 | 2,038,394 | 10 |
-| **QuickSort** | `sorted` | 1,000,000 | 84.032 | 25,728,740 | 13 |
-| **QuickSort** | `duplicates` | 1,000 | 0.024 | 3,285 | 2 |
-| **QuickSort** | `duplicates` | 10,000 | 0.224 | 29,106 | 3 |
-| **QuickSort** | `duplicates` | 100,000 | 2.252 | 369,617 | 2 |
-| **QuickSort** | `duplicates` | 1,000,000 | 22.236 | 3,902,257 | 2 |
-| **QuickSelect** | `random` | 1,000 | 0.019 | 3,238 | 13 |
-| **QuickSelect** | `random` | 10,000 | 0.167 | 34,862 | 19 |
-| **QuickSelect** | `random` | 100,000 | 1.544 | 275,855 | 19 |
-| **QuickSelect** | `random` | 1,000,000 | 17.521 | 3,665,515 | 33 |
-| **QuickSelect** | `sorted` | 1,000 | 0.006 | 2,335 | 11 |
-| **QuickSelect** | `sorted` | 10,000 | 0.056 | 26,106 | 14 |
-| **QuickSelect** | `sorted` | 100,000 | 0.723 | 334,319 | 21 |
-| **QuickSelect** | `sorted` | 1,000,000 | 6.500 | 2,979,711 | 29 |
-| **QuickSelect** | `duplicates` | 1,000 | 0.011 | 1,531 | 2 |
-| **QuickSelect** | `duplicates` | 10,000 | 0.154 | 18,891 | 3 |
-| **QuickSelect** | `duplicates` | 100,000 | 1.879 | 349,727 | 6 |
-| **QuickSelect** | `duplicates` | 1,000,000 | 16.558 | 2,200,839 | 5 |
+| **MergeSort** | `random` | 1,000 | 0.155 | 9,643 | 7 |
+| **MergeSort** | `random` | 10,000 | 1.747 | 127,047 | 10 |
+| **MergeSort** | `random` | 100,000 | 11.447 | 1,641,332 | 13 |
+| **MergeSort** | `random` | 1,000,000 | 141.700 | 19,886,841 | 17 |
+| **MergeSort** | `sorted` | 1,000 | 0.028 | 4,236 | 7 |
+| **MergeSort** | `sorted` | 10,000 | 0.213 | 59,248 | 10 |
+| **MergeSort** | `sorted` | 100,000 | 2.729 | 744,016 | 13 |
+| **MergeSort** | `sorted` | 1,000,000 | 33.674 | 9,071,040 | 17 |
+| **MergeSort** | `duplicates` | 1,000 | 0.026 | 9,146 | 7 |
+| **MergeSort** | `duplicates` | 10,000 | 0.512 | 121,227 | 10 |
+| **MergeSort** | `duplicates` | 100,000 | 5.950 | 1,562,199 | 13 |
+| **MergeSort** | `duplicates` | 1,000,000 | 66.640 | 18,923,945 | 17 |
+| **QuickSort** | `random` | 1,000 | 0.220 | 10,493 | 6 |
+| **QuickSort** | `random` | 10,000 | 1.159 | 151,551 | 8 |
+| **QuickSort** | `random` | 100,000 | 12.441 | 1,978,282 | 12 |
+| **QuickSort** | `random` | 1,000,000 | 149.648 | 23,938,950 | 13 |
+| **QuickSort** | `sorted` | 1,000 | 0.054 | 10,888 | 6 |
+| **QuickSort** | `sorted` | 10,000 | 0.628 | 153,417 | 8 |
+| **QuickSort** | `sorted` | 100,000 | 7.348 | 1,929,046 | 11 |
+| **QuickSort** | `sorted` | 1,000,000 | 82.780 | 24,313,412 | 14 |
+| **QuickSort** | `duplicates` | 1,000 | 0.024 | 3,200 | 2 |
+| **QuickSort** | `duplicates` | 10,000 | 0.222 | 32,891 | 2 |
+| **QuickSort** | `duplicates` | 100,000 | 2.107 | 309,801 | 2 |
+| **QuickSort** | `duplicates` | 1,000,000 | 21.649 | 3,199,875 | 3 |
+| **QuickSelect** | `random` | 1,000 | 0.020 | 2,642 | 8 |
+| **QuickSelect** | `random` | 10,000 | 0.187 | 26,121 | 19 |
+| **QuickSelect** | `random` | 100,000 | 1.760 | 248,971 | 16 |
+| **QuickSelect** | `random` | 1,000,000 | 13.846 | 4,484,819 | 35 |
+| **QuickSelect** | `sorted` | 1,000 | 0.005 | 1,693 | 7 |
+| **QuickSelect** | `sorted` | 10,000 | 0.109 | 48,652 | 16 |
+| **QuickSelect** | `sorted` | 100,000 | 0.705 | 379,584 | 26 |
+| **QuickSelect** | `sorted` | 1,000,000 | 6.629 | 2,129,369 | 19 |
+| **QuickSelect** | `duplicates` | 1,000 | 0.017 | 4,113 | 6 |
+| **QuickSelect** | `duplicates` | 10,000 | 0.144 | 17,971 | 2 |
+| **QuickSelect** | `duplicates` | 100,000 | 1.383 | 260,267 | 5 |
+| **QuickSelect** | `duplicates` | 1,000,000 | 14.777 | 2,500,716 | 3 |
 
 ---
 
@@ -141,17 +141,17 @@ The benchmark was executed using OpenJDK 21 on macOS. For every configuration, e
 
 **Key Observations:**
 - MergeSort and QuickSort exhibit nearly identical $O(n \log n)$ slopes on log-log scales across random data.
-- QuickSort on duplicate data is drastically faster ($22.2$ ms for $10^6$ elements) due to 3-way partitioning collapsing equal keys.
-- QuickSelect demonstrates pure linear scaling $O(n)$, executing on $1\,000\,000$ elements in just $17.5$ ms on random data and $6.5$ ms on sorted data.
+- QuickSort on duplicate data is drastically faster ($21.6$ ms for $10^6$ elements) due to 3-way partitioning collapsing equal keys.
+- QuickSelect demonstrates pure linear scaling $O(n)$, executing on $1\,000\,000$ elements in just $13.8$ ms on random data and $6.6$ ms on sorted data.
 
 ### 5.2. Plot 2: Maximum Recursion Depth vs Array Size ($n$)
 ![Maximum Recursion Depth vs n](depth_vs_n.png)
 
 **Key Observations:**
 - **MergeSort Depth:** Exactly matches $\lceil \log_2(n / 16) \rceil + 1$. For $n = 10^6$, depth is 17.
-- **QuickSort Depth:** Bounded strictly by $\log_2(n) + 1$ thanks to recursing into the smaller partition first and using a while loop for the larger partition. For $n = 100\,000$, depth was observed at 10 (well below the test limit $2 \log_2 n \approx 33.2$).
+- **QuickSort Depth:** Bounded strictly by $\log_2(n) + 1$ thanks to recursing into the smaller partition first and using a while loop for the larger partition. For $n = 100\,000$, depth was observed at 11-12 (well below the test limit $2 \log_2 n \approx 33.2$).
 - **QuickSort Duplicates:** Recursion depth stays at 2 to 3 regardless of size because 10 distinct values are sorted in very few partition levels.
-- **QuickSelect Depth:** Follows logarithmic expected depth $O(\log n)$ (ranging from 11 to 33 calls).
+- **QuickSelect Depth:** Follows logarithmic expected depth $O(\log n)$ (ranging from 7 to 35 calls).
 
 ### 5.3. Plot 3: Asymptotic Ratio vs Array Size ($n$) — $\Theta$-Bound Verification
 ![Ratio vs n](ratio_vs_n.png)
@@ -179,21 +179,20 @@ Evaluating the ratio $R(n) = f(n) / g(n)$ from the empirical data:
 
 2. **QuickSort ($g(n) = n \log_2 n$):**
    - Random:
-     - $n = 10^3: 10595 / 9966 = 1.063$
-     - $n = 10^4: 162380 / 132877 = 1.222$
-     - $n = 10^5: 1999549 / 1660964 = 1.204$
-     - $n = 10^6: 24994227 / 19931568 = 1.254$
-   - Bound constants: **$c_1 = 1.00$, $c_2 = 1.35$, $n_0 = 1\,000$**.
-   - Note that theoretical average comparisons for QuickSort is $2 n \ln n \approx 1.386 \, n \log_2 n$. The observed upper constant $c_2 \approx 1.25-1.35$ matches this theoretical constant with high fidelity!
+     - $n = 10^3: 10493 / 9966 = 1.053$
+     - $n = 10^4: 151551 / 132877 = 1.141$
+     - $n = 10^5: 1978282 / 1660964 = 1.191$
+     - $n = 10^6: 23938950 / 19931568 = 1.201$
+   - Bound constants: **$c_1 = 1.00$, $c_2 = 1.30$, $n_0 = 1\,000$**.
 
 3. **QuickSelect ($g(n) = n$):**
    - Random:
-     - $n = 10^3: 3238 / 1000 = 3.24$
-     - $n = 10^4: 34862 / 10000 = 3.49$
-     - $n = 10^5: 275855 / 100000 = 2.76$
-     - $n = 10^6: 3665515 / 1000000 = 3.67$
-   - Bound constants: **$c_1 = 2.70$, $c_2 = 4.00$, $n_0 = 1\,000$**.
-   - The ratio remains tightly bracketed between $2.7$ and $4.0$, proving that comparisons grow in strict proportion to $n$, confirming $\Theta(n)$ linearity.
+     - $n = 10^3: 2642 / 1000 = 2.64$
+     - $n = 10^4: 26121 / 10000 = 2.61$
+     - $n = 10^5: 248971 / 100000 = 2.49$
+     - $n = 10^6: 4484819 / 1000000 = 4.48$
+   - Bound constants: **$c_1 = 2.40$, $c_2 = 4.50$, $n_0 = 1\,000$**.
+   - The ratio remains tightly bracketed between $2.4$ and $4.5$, proving that comparisons grow in strict proportion to $n$, confirming $\Theta(n)$ linearity.
 
 ---
 
@@ -204,8 +203,8 @@ To evaluate Bonus Task A, both algorithms were tested on finding the median elem
 
 | Algorithm | Execution Time (ms) | Comparisons | Worst-Case Guarantee |
 | :--- | :---: | :---: | :---: |
-| **QuickSelect** | 3.06 ms | 28,028 | $O(n^2)$ (unlikely with random pivot) |
-| **Median of Medians** | 2.85 ms | 81,790 | $O(n)$ guaranteed |
+| **QuickSelect** | 2.25 ms | 28,213 | $O(n^2)$ (unlikely with random pivot) |
+| **Median of Medians** | 2.88 ms | 81,790 | $O(n)$ guaranteed |
 
 **Why QuickSelect is faster in practice despite higher worst-case complexity:**  
 Median-of-Medians splits the input into groups of 5, invokes Insertion Sort on each group, recursively finds the median of those medians to determine the pivot, and only then partitions the main array. This creates a massive constant-factor overhead ($T(n) \le T(n/5) + T(7n/10) + c \cdot n$ where $c$ is substantial). By contrast, QuickSelect picks a pivot in $O(1)$ time via a single pseudo-random index generation and immediately partitions the array. On average, QuickSelect requires $\approx 3.4n$ comparisons, whereas Median-of-Medians incurs $\approx 8n - 12n$ comparisons. For real-world systems, randomized QuickSelect is vastly preferred, while Median-of-Medians provides theoretical protection against adversarial worst-case inputs.

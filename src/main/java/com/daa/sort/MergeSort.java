@@ -13,63 +13,44 @@ public class MergeSort {
     }
 
     public static void sort(int[] a, Metrics metrics) {
-        if (a == null || a.length <= 1) {
-            return;
-        }
-        int[] buffer = new int[a.length];
+        if (a == null || a.length <= 1) return;
         metrics.startTimer();
-        mergeSort(a, buffer, 0, a.length - 1, metrics);
+        mergeSort(a, new int[a.length], 0, a.length - 1, metrics);
         metrics.stopTimer();
     }
 
-    private static void mergeSort(int[] a, int[] buffer, int left, int right, Metrics metrics) {
-        if (left >= right) {
+    private static void mergeSort(int[] a, int[] buf, int l, int r, Metrics metrics) {
+        if (r - l + 1 <= INSERTION_SORT_CUTOFF) {
+            insertionSort(a, l, r, metrics);
             return;
         }
-
-        if (right - left + 1 <= INSERTION_SORT_CUTOFF) {
-            insertionSort(a, left, right, metrics);
-            return;
-        }
-
-        int mid = left + (right - left) / 2;
+        int m = (l + r) / 2;
         metrics.enterRecursion();
-        mergeSort(a, buffer, left, mid, metrics);
-        mergeSort(a, buffer, mid + 1, right, metrics);
-        merge(a, buffer, left, mid, right, metrics);
+        mergeSort(a, buf, l, m, metrics);
+        mergeSort(a, buf, m + 1, r, metrics);
+        merge(a, buf, l, m, r, metrics);
         metrics.exitRecursion();
     }
 
-    private static void merge(int[] a, int[] buffer, int left, int mid, int right, Metrics metrics) {
-        System.arraycopy(a, left, buffer, left, right - left + 1);
-
-        int i = left;
-        int j = mid + 1;
-        int k = left;
-
-        while (i <= mid && j <= right) {
-            if (metrics.compare(buffer[i], buffer[j]) <= 0) {
-                a[k++] = buffer[i++];
+    private static void merge(int[] a, int[] buf, int l, int m, int r, Metrics metrics) {
+        System.arraycopy(a, l, buf, l, r - l + 1);
+        int i = l, j = m + 1, k = l;
+        while (i <= m && j <= r) {
+            if (metrics.compare(buf[i], buf[j]) <= 0) {
+                a[k++] = buf[i++];
             } else {
-                a[k++] = buffer[j++];
+                a[k++] = buf[j++];
             }
         }
-
-        while (i <= mid) {
-            a[k++] = buffer[i++];
-        }
-        while (j <= right) {
-            a[k++] = buffer[j++];
-        }
+        while (i <= m) a[k++] = buf[i++];
+        while (j <= r) a[k++] = buf[j++];
     }
 
-    public static void insertionSort(int[] a, int left, int right, Metrics metrics) {
-        for (int i = left + 1; i <= right; i++) {
-            int key = a[i];
-            int j = i - 1;
-            while (j >= left && metrics.compare(a[j], key) > 0) {
-                a[j + 1] = a[j];
-                j--;
+    public static void insertionSort(int[] a, int l, int r, Metrics metrics) {
+        for (int i = l + 1; i <= r; i++) {
+            int key = a[i], j = i - 1;
+            while (j >= l && metrics.compare(a[j], key) > 0) {
+                a[j + 1] = a[j--];
             }
             a[j + 1] = key;
         }

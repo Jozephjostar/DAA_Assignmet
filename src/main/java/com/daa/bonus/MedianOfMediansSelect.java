@@ -10,84 +10,58 @@ public class MedianOfMediansSelect {
     }
 
     public static int select(int[] a, int k, Metrics metrics) {
-        if (a == null || a.length == 0) {
-            throw new IllegalArgumentException("Array cannot be null or empty.");
-        }
-        if (k < 0 || k >= a.length) {
-            throw new IllegalArgumentException(String.format(
-                    "Invalid rank k=%d: must be in [0, %d].", k, a.length - 1));
-        }
+        if (a == null || a.length == 0) throw new IllegalArgumentException("Array is null or empty");
+        if (k < 0 || k >= a.length) throw new IllegalArgumentException("Invalid rank k=" + k);
 
         metrics.startTimer();
-        int result = selectHelper(a, 0, a.length - 1, k, metrics);
+        int res = selectHelper(a, 0, a.length - 1, k, metrics);
         metrics.stopTimer();
-        return result;
+        return res;
     }
 
-    private static int selectHelper(int[] a, int left, int right, int k, Metrics metrics) {
-        while (left <= right) {
-            if (left == right) {
-                return a[left];
-            }
+    private static int selectHelper(int[] a, int l, int r, int k, Metrics metrics) {
+        while (l <= r) {
+            if (l == r) return a[l];
 
             metrics.enterRecursion();
-            int pivotValue = getMedianOfMedians(a, left, right, metrics);
-            int[] bounds = partitionAroundValue(a, left, right, pivotValue, metrics);
+            int pivot = getMedianOfMedians(a, l, r, metrics);
+            int[] bounds = partition(a, l, r, pivot, metrics);
             metrics.exitRecursion();
 
-            int lt = bounds[0];
-            int gt = bounds[1];
-
-            if (k >= lt && k <= gt) {
-                return a[k];
-            } else if (k < lt) {
-                right = lt - 1;
-            } else {
-                left = gt + 1;
-            }
+            int lt = bounds[0], gt = bounds[1];
+            if (k >= lt && k <= gt) return a[k];
+            if (k < lt) r = lt - 1;
+            else l = gt + 1;
         }
-        return a[left];
+        return a[l];
     }
 
-    private static int getMedianOfMedians(int[] a, int left, int right, Metrics metrics) {
-        int n = right - left + 1;
+    private static int getMedianOfMedians(int[] a, int l, int r, Metrics metrics) {
+        int n = r - l + 1;
         if (n <= 5) {
-            MergeSort.insertionSort(a, left, right, metrics);
-            return a[left + n / 2];
+            MergeSort.insertionSort(a, l, r, metrics);
+            return a[l + n / 2];
         }
 
         int numGroups = (n + 4) / 5;
         for (int i = 0; i < numGroups; i++) {
-            int subLeft = left + i * 5;
-            int subRight = Math.min(subLeft + 4, right);
-            MergeSort.insertionSort(a, subLeft, subRight, metrics);
-            int medianIdx = subLeft + (subRight - subLeft) / 2;
-            swap(a, left + i, medianIdx);
+            int subL = l + i * 5;
+            int subR = Math.min(subL + 4, r);
+            MergeSort.insertionSort(a, subL, subR, metrics);
+            swap(a, l + i, subL + (subR - subL) / 2);
         }
 
-        int medOfMedsRank = left + numGroups / 2;
-        return selectHelper(a, left, left + numGroups - 1, medOfMedsRank, metrics);
+        return selectHelper(a, l, l + numGroups - 1, l + numGroups / 2, metrics);
     }
 
-    private static int[] partitionAroundValue(int[] a, int left, int right, int pivotValue, Metrics metrics) {
-        int lt = left;
-        int gt = right;
-        int i = left;
-
+    private static int[] partition(int[] a, int l, int r, int pivot, Metrics metrics) {
+        int lt = l, gt = r, i = l;
         while (i <= gt) {
-            int cmp = metrics.compare(a[i], pivotValue);
-            if (cmp < 0) {
-                swap(a, lt, i);
-                lt++;
-                i++;
-            } else if (cmp > 0) {
-                swap(a, i, gt);
-                gt--;
-            } else {
-                i++;
-            }
+            int cmp = metrics.compare(a[i], pivot);
+            if (cmp < 0) swap(a, lt++, i++);
+            else if (cmp > 0) swap(a, i, gt--);
+            else i++;
         }
-
         return new int[]{lt, gt};
     }
 

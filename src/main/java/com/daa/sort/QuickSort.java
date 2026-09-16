@@ -12,64 +12,46 @@ public class QuickSort {
     }
 
     public static void sort(int[] a, Metrics metrics) {
-        if (a == null || a.length <= 1) {
-            return;
-        }
+        if (a == null || a.length <= 1) return;
         Random rnd = new Random();
         metrics.startTimer();
         quickSort(a, 0, a.length - 1, metrics, rnd);
         metrics.stopTimer();
     }
 
-    private static void quickSort(int[] a, int left, int right, Metrics metrics, Random rnd) {
-        while (left < right) {
+    private static void quickSort(int[] a, int l, int r, Metrics metrics, Random rnd) {
+        while (l < r) {
             metrics.enterRecursion();
-            int[] bounds = partition3Way(a, left, right, metrics, rnd);
-            int lt = bounds[0];
-            int gt = bounds[1];
+            int[] bounds = partition3Way(a, l, r, metrics, rnd);
+            int lt = bounds[0], gt = bounds[1];
 
-            int leftSize = lt - left;
-            int rightSize = right - gt;
-
-            if (leftSize < rightSize) {
-                if (leftSize > 1) {
-                    quickSort(a, left, lt - 1, metrics, rnd);
-                }
+            if (lt - l < r - gt) {
+                if (lt - 1 > l) quickSort(a, l, lt - 1, metrics, rnd);
                 metrics.exitRecursion();
-                left = gt + 1;
+                l = gt + 1;
             } else {
-                if (rightSize > 1) {
-                    quickSort(a, gt + 1, right, metrics, rnd);
-                }
+                if (r > gt + 1) quickSort(a, gt + 1, r, metrics, rnd);
                 metrics.exitRecursion();
-                right = lt - 1;
+                r = lt - 1;
             }
         }
     }
 
-    public static int[] partition3Way(int[] a, int left, int right, Metrics metrics, Random rnd) {
-        int pivotIndex = left + rnd.nextInt(right - left + 1);
-        swap(a, left, pivotIndex);
-
-        int pivot = a[left];
-        int lt = left;
-        int gt = right;
-        int i = left + 1;
+    public static int[] partition3Way(int[] a, int l, int r, Metrics metrics, Random rnd) {
+        int pIdx = l + rnd.nextInt(r - l + 1);
+        swap(a, l, pIdx);
+        int pivot = a[l], lt = l, gt = r, i = l + 1;
 
         while (i <= gt) {
             int cmp = metrics.compare(a[i], pivot);
             if (cmp < 0) {
-                swap(a, lt, i);
-                lt++;
-                i++;
+                swap(a, lt++, i++);
             } else if (cmp > 0) {
-                swap(a, i, gt);
-                gt--;
+                swap(a, i, gt--);
             } else {
                 i++;
             }
         }
-
         return new int[]{lt, gt};
     }
 
