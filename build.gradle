@@ -7,11 +7,6 @@ group = 'com.daa'
 version = '1.0.0'
 description = 'DAA Assignment 1 - Divide and Conquer & Asymptotic Notations'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
 
 repositories {
     mavenCentral()
