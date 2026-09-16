@@ -15,7 +15,11 @@ public class BenchmarkRunner {
     private static final String[] ALGOS = {"MergeSort", "QuickSort", "QuickSelect"};
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("java.awt.headless", "true");
+
         Random rnd = new Random(2026);
+        warmUp(rnd);
+
         List<String> rows = new ArrayList<>();
         rows.add("algorithm,input,n,time_ms,comparisons,max_depth");
 
@@ -40,10 +44,13 @@ public class BenchmarkRunner {
                         depths[r] = m.getMaxDepth();
                     }
 
-                    Arrays.sort(times);
-                    double medTime = times[2];
-                    long medComps = comps[2];
-                    int medDepth = depths[2];
+                    Integer[] idx = {0, 1, 2, 3, 4};
+                    Arrays.sort(idx, Comparator.comparingDouble(i -> times[i]));
+                    int med = idx[2];
+
+                    double medTime = times[med];
+                    long medComps = comps[med];
+                    int medDepth = depths[med];
 
                     System.out.printf("%s | %s | n=%d | %.3f ms | comps=%d | depth=%d\n",
                             algo, type, n, medTime, medComps, medDepth);
@@ -59,6 +66,15 @@ public class BenchmarkRunner {
         }
 
         PlotGenerator.generateAllPlots("results.csv", ".");
+    }
+
+    private static void warmUp(Random rnd) {
+        for (int i = 0; i < 30; i++) {
+            int[] arr = generateArray("random", 3000, rnd);
+            MergeSort.sort(arr.clone(), new Metrics());
+            QuickSort.sort(arr.clone(), new Metrics());
+            QuickSelect.select(arr.clone(), 1500, new Metrics());
+        }
     }
 
     public static int[] generateArray(String type, int n, Random rnd) {

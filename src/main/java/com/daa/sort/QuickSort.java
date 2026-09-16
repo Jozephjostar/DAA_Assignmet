@@ -21,17 +21,22 @@ public class QuickSort {
 
     private static void quickSort(int[] a, int l, int r, Metrics metrics, Random rnd) {
         while (l < r) {
-            metrics.enterRecursion();
             int[] bounds = partition3Way(a, l, r, metrics, rnd);
             int lt = bounds[0], gt = bounds[1];
 
             if (lt - l < r - gt) {
-                if (lt - 1 > l) quickSort(a, l, lt - 1, metrics, rnd);
-                metrics.exitRecursion();
+                if (lt - 1 > l) {
+                    metrics.enterRecursion();
+                    quickSort(a, l, lt - 1, metrics, rnd);
+                    metrics.exitRecursion();
+                }
                 l = gt + 1;
             } else {
-                if (r > gt + 1) quickSort(a, gt + 1, r, metrics, rnd);
-                metrics.exitRecursion();
+                if (r > gt + 1) {
+                    metrics.enterRecursion();
+                    quickSort(a, gt + 1, r, metrics, rnd);
+                    metrics.exitRecursion();
+                }
                 r = lt - 1;
             }
         }
