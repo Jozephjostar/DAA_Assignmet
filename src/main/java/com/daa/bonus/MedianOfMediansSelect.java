@@ -3,14 +3,6 @@ package com.daa.bonus;
 import com.daa.metrics.Metrics;
 import com.daa.sort.MergeSort;
 
-/**
- * Task A Bonus (+10%): Deterministic Select (Median of Medians)
- * Guaranteed O(n) worst-case time complexity:
- * 1. Split array into groups of 5.
- * 2. Find median of each group with Insertion Sort.
- * 3. Recursively find the median of these medians and use it as the pivot.
- * 4. Partition around this pivot and continue on the side containing k.
- */
 public class MedianOfMediansSelect {
 
     public static int select(int[] a, int k) {
@@ -57,10 +49,6 @@ public class MedianOfMediansSelect {
         return a[left];
     }
 
-    /**
-     * Divides array into groups of 5, sorts each group using insertion sort,
-     * and recursively selects the median of medians.
-     */
     private static int getMedianOfMedians(int[] a, int left, int right, Metrics metrics) {
         int n = right - left + 1;
         if (n <= 5) {
@@ -77,14 +65,10 @@ public class MedianOfMediansSelect {
             swap(a, left + i, medianIdx);
         }
 
-        // Recursively find median of the medians (located in a[left .. left + numGroups - 1])
         int medOfMedsRank = left + numGroups / 2;
         return selectHelper(a, left, left + numGroups - 1, medOfMedsRank, metrics);
     }
 
-    /**
-     * 3-Way partition around a specified pivot value.
-     */
     private static int[] partitionAroundValue(int[] a, int left, int right, int pivotValue, Metrics metrics) {
         int lt = left;
         int gt = right;

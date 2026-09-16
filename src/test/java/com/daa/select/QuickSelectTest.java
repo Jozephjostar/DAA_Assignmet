@@ -46,11 +46,8 @@ public class QuickSelectTest {
         int[] sorted = original.clone();
         Arrays.sort(sorted);
 
-        // Min
         assertEquals(sorted[0], QuickSelect.select(original.clone(), 0));
-        // Max
         assertEquals(sorted[sorted.length - 1], QuickSelect.select(original.clone(), sorted.length - 1));
-        // Median
         int mid = sorted.length / 2;
         assertEquals(sorted[mid], QuickSelect.select(original.clone(), mid));
     }

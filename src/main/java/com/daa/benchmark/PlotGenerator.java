@@ -12,13 +12,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-/**
- * High-quality chart generator producing PNG plots directly via Java AWT.
- * Generates:
- * 1. time_vs_n.png - Running time (ms) vs n
- * 2. depth_vs_n.png - Maximum recursion depth vs n
- * 3. ratio_vs_n.png - Asymptotic ratio vs n (checking Theta bound)
- */
 public class PlotGenerator {
 
     public static class Record {
@@ -44,10 +37,8 @@ public class PlotGenerator {
 
         public double getRatio() {
             if (algorithm.equalsIgnoreCase("QuickSelect")) {
-                // comparisons / n for QuickSelect (linear theoretical growth)
                 return (double) comparisons / n;
             } else {
-                // comparisons / (n * log2(n)) for MergeSort and QuickSort
                 double log2n = Math.log(n) / Math.log(2.0);
                 return (double) comparisons / (n * log2n);
             }
@@ -57,7 +48,7 @@ public class PlotGenerator {
     public static List<Record> loadCsv(String csvPath) throws IOException {
         List<Record> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
-            String line = br.readLine(); // skip header
+            String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
@@ -77,13 +68,11 @@ public class PlotGenerator {
     public static void generateAllPlots(String csvPath, String outputDir) throws IOException {
         List<Record> records = loadCsv(csvPath);
 
-        // Group records by series
         Map<String, List<Record>> seriesMap = new LinkedHashMap<>();
         for (Record r : records) {
             seriesMap.computeIfAbsent(r.seriesKey(), k -> new ArrayList<>()).add(r);
         }
 
-        // Sort each series by n
         for (List<Record> list : seriesMap.values()) {
             list.sort(Comparator.comparingInt(r -> r.n));
         }
@@ -108,11 +97,9 @@ public class PlotGenerator {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
 
-        // Anti-aliasing
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        // Background
         g.setColor(new Color(250, 252, 255));
         g.fillRect(0, 0, width, height);
 
@@ -124,13 +111,11 @@ public class PlotGenerator {
         int plotWidth = width - padLeft - padRight;
         int plotHeight = height - padTop - padBottom;
 
-        // Plot background
         g.setColor(Color.WHITE);
         g.fillRect(padLeft, padTop, plotWidth, plotHeight);
         g.setColor(new Color(220, 224, 230));
         g.drawRect(padLeft, padTop, plotWidth, plotHeight);
 
-        // Compute ranges
         double minY = Double.MAX_VALUE;
         double maxY = Double.MIN_VALUE;
 
@@ -155,7 +140,6 @@ public class PlotGenerator {
 
         int[] xValues = {1_000, 10_000, 100_000, 1_000_000};
 
-        // Grid & X-axis ticks
         g.setFont(new Font("SansSerif", Font.PLAIN, 12));
         FontMetrics fm = g.getFontMetrics();
 
@@ -172,7 +156,6 @@ public class PlotGenerator {
             g.drawString(lbl, x - lblW / 2, padTop + plotHeight + 20);
         }
 
-        // Y-axis grid & labels
         int numYTicks = 6;
         for (int i = 0; i <= numYTicks; i++) {
             double frac = (double) i / numYTicks;
@@ -202,20 +185,18 @@ public class PlotGenerator {
             g.drawString(yText, padLeft - tw - 10, y + 4);
         }
 
-        // Palette for distinct series
         Color[] colors = {
-                new Color(31, 119, 180), // blue
-                new Color(51, 160, 44),  // green
-                new Color(227, 26, 28),  // red
-                new Color(255, 127, 0),  // orange
-                new Color(106, 61, 154), // purple
-                new Color(177, 89, 40),  // brown
-                new Color(20, 160, 170), // teal
-                new Color(230, 80, 150), // pink
-                new Color(100, 100, 100) // gray
+                new Color(31, 119, 180),
+                new Color(51, 160, 44),
+                new Color(227, 26, 28),
+                new Color(255, 127, 0),
+                new Color(106, 61, 154),
+                new Color(177, 89, 40),
+                new Color(20, 160, 170),
+                new Color(230, 80, 150),
+                new Color(100, 100, 100)
         };
 
-        // Draw Series
         int sIdx = 0;
         for (Map.Entry<String, List<Record>> entry : seriesMap.entrySet()) {
             Color color = colors[sIdx % colors.length];
@@ -261,7 +242,6 @@ public class PlotGenerator {
             }
         }
 
-        // Titles and Labels
         g.setFont(new Font("SansSerif", Font.BOLD, 18));
         g.setColor(new Color(20, 30, 45));
         int titleW = g.getFontMetrics().stringWidth(title);
@@ -272,7 +252,6 @@ public class PlotGenerator {
         int xlW = g.getFontMetrics().stringWidth(xLabel);
         g.drawString(xLabel, padLeft + (plotWidth - xlW) / 2, height - 30);
 
-        // Y-axis label (vertical)
         Graphics2D gRotated = (Graphics2D) g.create();
         gRotated.setFont(new Font("SansSerif", Font.BOLD, 13));
         gRotated.setColor(new Color(50, 60, 75));
@@ -282,7 +261,6 @@ public class PlotGenerator {
         gRotated.drawString(yLabel, -ylW / 2, 0);
         gRotated.dispose();
 
-        // Draw Legend on the right side
         int legX = padLeft + plotWidth + 20;
         int legY = padTop + 10;
         g.setFont(new Font("SansSerif", Font.BOLD, 12));

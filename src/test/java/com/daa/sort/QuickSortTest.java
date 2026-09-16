@@ -60,7 +60,6 @@ public class QuickSortTest {
 
         Metrics metrics = QuickSort.sort(a);
         assertArrayEquals(expected, a);
-        // With 3-way partition, all equal elements should be partitioned in one pass!
         assertTrue(metrics.getMaxDepth() <= 2, "3-way partition should handle all-equal elements with depth <= 2");
     }
 
@@ -110,7 +109,6 @@ public class QuickSortTest {
         assertTrue(metrics.getMaxDepth() <= maxAllowedDepth,
                 String.format("maxDepth (%d) exceeded 2*log2(n) (%.2f)", metrics.getMaxDepth(), maxAllowedDepth));
 
-        // Also check that it is sorted
         for (int i = 0; i < n - 1; i++) {
             assertTrue(a[i] <= a[i + 1], "Array must remain correctly sorted");
         }

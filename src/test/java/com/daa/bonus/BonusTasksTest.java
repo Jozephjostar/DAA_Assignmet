@@ -83,14 +83,12 @@ public class BonusTasksTest {
     @Test
     @DisplayName("Bonus Task B: Edge cases (identical coordinates, collinear points)")
     void testClosestPairEdgeCases() {
-        // Two points
         ClosestPairOfPoints.Point[] twoPoints = {
                 new ClosestPairOfPoints.Point(0, 0),
                 new ClosestPairOfPoints.Point(3, 4)
         };
         assertEquals(5.0, ClosestPairOfPoints.findClosestDistance(twoPoints), 1e-9);
 
-        // Three points
         ClosestPairOfPoints.Point[] threePoints = {
                 new ClosestPairOfPoints.Point(0, 0),
                 new ClosestPairOfPoints.Point(1, 1),
@@ -98,7 +96,6 @@ public class BonusTasksTest {
         };
         assertEquals(Math.sqrt(2.0), ClosestPairOfPoints.findClosestDistance(threePoints), 1e-9);
 
-        // Collinear horizontal points
         ClosestPairOfPoints.Point[] collinear = {
                 new ClosestPairOfPoints.Point(1, 5),
                 new ClosestPairOfPoints.Point(4, 5),
