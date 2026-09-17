@@ -4,6 +4,7 @@
 **Course:** Design and Analysis of Algorithms  
 **Instructor:** Taubakabyl Nurlybek  
 **Date:** September 2026  
+**GitHub Repository:** https://github.com/Jozephjostar/DAA_Assignmet  
 **Repository Branch:** `main`, **Tag:** `v1.0`
 
 ---

@@ -3,7 +3,8 @@
 **Student:** Nursultan Maratov  
 **Course:** Design and Analysis of Algorithms  
 **Instructor:** Taubakabyl Nurlybek  
-**Release:** `v1.0` (Branch: `main`)
+**GitHub Repository:** https://github.com/Jozephjostar/DAA_Assignmet  
+**Release:** `v1.0` (Branch: `main`, Tag: `v1.0`)
 
 This repository implements high-performance, memory-safe Divide-and-Conquer algorithms in Java 21, complete with an empirical benchmarking harness, automated AWT plot generation, comprehensive JUnit 5 test suites, and theoretical asymptotic analysis.
 
