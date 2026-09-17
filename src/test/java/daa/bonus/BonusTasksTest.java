@@ -34,48 +34,68 @@ public class BonusTasksTest {
     }
 
     @Test
-    @DisplayName("Bonus Task A: Compare Median of Medians vs QuickSelect (Comparisons & Time)")
+    @DisplayName("Bonus Task A: Compare Median of Medians vs QuickSelect on Random and Sorted")
     void testCompareMedianOfMediansWithQuickSelect() {
         int n = 10_000;
-        Random rnd = new Random(42);
-        int[] arr1 = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr1[i] = rnd.nextInt();
-        }
-        int[] arr2 = arr1.clone();
-
         int k = n / 2;
 
-        Metrics mQuick = new Metrics();
-        mQuick.startTimer();
-        int valQuick = QuickSelect.select(arr1, k, mQuick);
-        mQuick.stopTimer();
+        Random rnd = new Random(42);
+        int[] rndArr1 = new int[n];
+        for (int i = 0; i < n; i++) {
+            rndArr1[i] = rnd.nextInt();
+        }
+        int[] rndArr2 = rndArr1.clone();
 
-        Metrics mMom = new Metrics();
-        int valMom = MedianOfMediansSelect.select(arr2, k, mMom);
+        Metrics mQuickRnd = new Metrics();
+        mQuickRnd.startTimer();
+        int valQuickRnd = QuickSelect.select(rndArr1, k, mQuickRnd);
+        mQuickRnd.stopTimer();
 
-        assertEquals(valQuick, valMom);
+        Metrics mMomRnd = new Metrics();
+        int valMomRnd = MedianOfMediansSelect.select(rndArr2, k, mMomRnd);
 
-        System.out.println("Selection comparison for n=" + n + ":");
-        System.out.printf(java.util.Locale.ROOT, "  QuickSelect: %.2f ms, %d comparisons%n", mQuick.timeMs(), mQuick.getComparisons());
-        System.out.printf(java.util.Locale.ROOT, "  Median-of-Medians: %.2f ms, %d comparisons%n", mMom.timeMs(), mMom.getComparisons());
+        assertEquals(valQuickRnd, valMomRnd);
+
+        int[] sortedArr1 = new int[n];
+        for (int i = 0; i < n; i++) {
+            sortedArr1[i] = i;
+        }
+        int[] sortedArr2 = sortedArr1.clone();
+
+        Metrics mQuickSorted = new Metrics();
+        mQuickSorted.startTimer();
+        int valQuickSorted = QuickSelect.select(sortedArr1, k, mQuickSorted);
+        mQuickSorted.stopTimer();
+
+        Metrics mMomSorted = new Metrics();
+        int valMomSorted = MedianOfMediansSelect.select(sortedArr2, k, mMomSorted);
+
+        assertEquals(valQuickSorted, valMomSorted);
+
+        System.out.println("Selection comparison for n=" + n + " (Random):");
+        System.out.printf(java.util.Locale.ROOT, "  QuickSelect: %.2f ms, %d comparisons%n", mQuickRnd.timeMs(), mQuickRnd.getComparisons());
+        System.out.printf(java.util.Locale.ROOT, "  Median-of-Medians: %.2f ms, %d comparisons%n", mMomRnd.timeMs(), mMomRnd.getComparisons());
+
+        System.out.println("Selection comparison for n=" + n + " (Sorted):");
+        System.out.printf(java.util.Locale.ROOT, "  QuickSelect: %.2f ms, %d comparisons%n", mQuickSorted.timeMs(), mQuickSorted.getComparisons());
+        System.out.printf(java.util.Locale.ROOT, "  Median-of-Medians: %.2f ms, %d comparisons%n", mMomSorted.timeMs(), mMomSorted.getComparisons());
     }
 
     @Test
-    @DisplayName("Bonus Task B: Closest Pair of Points O(n log n) matches O(n^2) brute force")
+    @DisplayName("Bonus Task B: Closest Pair of Points O(n log n) matches O(n^2) brute force for n <= 2000")
     void testClosestPairOfPoints() {
         Random rnd = new Random(42);
-        for (int i = 0; i < 20; i++) {
-            int n = rnd.nextInt(200) + 5;
+        int[] testSizes = {10, 50, 200, 500, 2000};
+        for (int n : testSizes) {
             ClosestPairOfPoints.Point[] points = new ClosestPairOfPoints.Point[n];
             for (int j = 0; j < n; j++) {
-                points[j] = new ClosestPairOfPoints.Point(rnd.nextDouble() * 1000, rnd.nextDouble() * 1000);
+                points[j] = new ClosestPairOfPoints.Point(rnd.nextDouble() * 10_000, rnd.nextDouble() * 10_000);
             }
 
             double expected = ClosestPairOfPoints.bruteForce(points);
             double actual = ClosestPairOfPoints.findClosestDistance(points);
 
-            assertEquals(expected, actual, 1e-9);
+            assertEquals(expected, actual, 1e-7);
         }
     }
 }

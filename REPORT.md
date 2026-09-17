@@ -199,15 +199,17 @@ Evaluating the ratio $R(n) = f(n) / g(n)$ from the empirical data:
 ## 7. Comparative Analysis: Bonus Tasks
 
 ### 7.1. Task A: QuickSelect vs Deterministic Median of Medians
-To evaluate Bonus Task A, both algorithms were tested on finding the median element ($k = n/2$) of identical arrays of size $n = 10\,000$:
+To evaluate Bonus Task A, both algorithms were tested on finding the median element ($k = n/2$) of identical arrays of size $n = 10\,000$ across both `random` and `sorted` distributions:
 
-| Algorithm | Execution Time (ms) | Comparisons | Worst-Case Guarantee |
-| :--- | :---: | :---: | :---: |
-| **QuickSelect** | 1.36 ms | 30,848 | $O(n^2)$ (unlikely with random pivot) |
-| **Median of Medians** | 1.84 ms | 81,790 | $O(n)$ guaranteed |
+| Input Distribution | Algorithm | Execution Time (ms) | Comparisons | Worst-Case Guarantee |
+| :--- | :--- | :---: | :---: | :---: |
+| **Random ($n=10\,000$)** | **QuickSelect** | 0.11 ms | 23,338 | $O(n^2)$ (extremely improbable with random pivot) |
+| **Random ($n=10\,000$)** | **Median of Medians** | 1.41 ms | 83,907 | $O(n)$ guaranteed |
+| **Sorted ($n=10\,000$)** | **QuickSelect** | 0.04 ms | 30,428 | $O(n^2)$ |
+| **Sorted ($n=10\,000$)** | **Median of Medians** | 0.38 ms | 58,833 | $O(n)$ guaranteed |
 
 **Why QuickSelect is faster in practice despite higher worst-case complexity:**  
-Median-of-Medians splits the input into groups of 5, invokes Insertion Sort on each group, recursively finds the median of those medians to determine the pivot, and only then partitions the main array. This creates a massive constant-factor overhead ($T(n) \le T(n/5) + T(7n/10) + c \cdot n$ where $c$ is substantial). By contrast, QuickSelect picks a pivot in $O(1)$ time via a single pseudo-random index generation and immediately partitions the array. On average, QuickSelect requires $\approx 3.4n$ comparisons, whereas Median-of-Medians incurs $\approx 8n - 12n$ comparisons. For real-world systems, randomized QuickSelect is vastly preferred, while Median-of-Medians provides theoretical protection against adversarial worst-case inputs.
+Median-of-Medians splits the input into groups of 5, invokes Insertion Sort on each group, recursively finds the median of those medians to determine the pivot, and only then partitions the main array. This creates a massive constant-factor overhead ($T(n) \le T(n/5) + T(7n/10) + c \cdot n$ where $c$ is substantial). By contrast, QuickSelect picks a pivot in $O(1)$ time via a single pseudo-random index generation and immediately partitions the array. On average, QuickSelect requires $\approx 3.4n$ comparisons, whereas Median-of-Medians incurs $\approx 6n - 12n$ comparisons. On already sorted inputs, Median-of-Medians benefits from Insertion Sort on 5-element blocks taking minimal comparisons ($4$ per group), but still requires recursive calls to find the true pivot. For real-world systems, randomized QuickSelect is vastly preferred for speed and simplicity, while Median-of-Medians provides theoretical protection against adversarial worst-case inputs.
 
 ### 7.2. Task B: Closest Pair of Points ($O(n \log n)$ vs $O(n^2)$)
 Bonus Task B implements the Divide-and-Conquer 2D closest pair algorithm:
