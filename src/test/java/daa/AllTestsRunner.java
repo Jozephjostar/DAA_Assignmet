@@ -1,5 +1,6 @@
-package com.daa;
+package daa;
 
+import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -9,12 +10,10 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 import java.io.PrintWriter;
 
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
-
 public class AllTestsRunner {
     public static void main(String[] args) {
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(selectPackage("com.daa"))
+                .selectors(DiscoverySelectors.selectPackage("daa"))
                 .build();
 
         Launcher launcher = LauncherFactory.create();
@@ -26,10 +25,9 @@ public class AllTestsRunner {
         summary.printTo(new PrintWriter(System.out));
 
         if (summary.getTotalFailureCount() > 0) {
-            System.err.println("Some tests failed!");
             System.exit(1);
         } else {
-            System.out.println("ALL " + summary.getTestsSucceededCount() + " TESTS PASSED SUCCESSFULLY!");
+            System.out.println("ALL TESTS PASSED SUCCESSFULLY!");
         }
     }
 }

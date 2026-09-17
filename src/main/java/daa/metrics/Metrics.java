@@ -1,23 +1,31 @@
-package com.daa.metrics;
+package daa.metrics;
 
-public class Metrics {
+public final class Metrics {
     private long comparisons;
     private int currentDepth;
     private int maxDepth;
     private long startTime;
-    private double timeMs;
+    private long timeNs;
 
     public void startTimer() {
         startTime = System.nanoTime();
     }
 
     public void stopTimer() {
-        timeMs = (System.nanoTime() - startTime) / 1_000_000.0;
+        timeNs = System.nanoTime() - startTime;
+    }
+
+    public double timeMs() {
+        return timeNs / 1_000_000.0;
     }
 
     public int compare(int a, int b) {
         comparisons++;
         return Integer.compare(a, b);
+    }
+
+    public void addComparisons(long count) {
+        comparisons += count;
     }
 
     public void enterRecursion() {
@@ -28,9 +36,7 @@ public class Metrics {
     }
 
     public void exitRecursion() {
-        if (currentDepth > 0) {
-            currentDepth--;
-        }
+        currentDepth--;
     }
 
     public long getComparisons() {
@@ -41,7 +47,7 @@ public class Metrics {
         return maxDepth;
     }
 
-    public double getTimeMs() {
-        return timeMs;
+    public long getTimeNs() {
+        return timeNs;
     }
 }

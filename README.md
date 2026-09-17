@@ -11,32 +11,29 @@ This repository implements high-performance, memory-safe Divide-and-Conquer algo
 
 ## Features
 
-1. **MergeSort (`com.daa.sort.MergeSort`)**
+1. **MergeSort (`daa.algorithms.MergeSort`)**
    - **Reusable Buffer:** Helper array `int[n]` allocated once in the top-level call and passed through recursive calls (zero memory churn).
    - **Cutoff:** Subarrays with $\le 15$ elements are sorted using Insertion Sort.
    - **Linear Merge:** In-place buffer merge operating in strictly $O(n)$ time.
 
-2. **QuickSort (`com.daa.sort.QuickSort`)**
+2. **QuickSort (`daa.algorithms.QuickSort`)**
    - **Random Pivot:** Uniform random pivot selection to prevent $O(n^2)$ worst-case degradation on sorted or reverse-sorted inputs.
    - **Smaller Side First:** Recursion into the smaller partition combined with while-loop iteration on the larger partition (tail recursion elimination), strictly bounding recursion depth to $\le \log_2(n) + 1$.
-   - **3-Way Partitioning:** Dutch National Flag partition (`< pivot`, `= pivot`, `> pivot`) ensuring $O(n)$ time on heavy duplicate datasets.
+   - **3-Way Partitioning:** Dutch National Flag partition (`< pivot`, `= pivot`, `> pivot`) ensuring $O(n)$ time on heavy duplicate datasets via `daa.algorithms.Partition`.
 
-3. **QuickSelect (`com.daa.select.QuickSelect`)**
+3. **QuickSelect (`daa.algorithms.QuickSelect`)**
    - **Partition Reuse:** Reuses the exact same 3-way partition method as QuickSort.
    - **One Side Only:** Recurses only into the subarray containing index $k$.
    - **Input Validation:** Throws descriptive `IllegalArgumentException` on null/empty arrays or out-of-bounds ranks.
 
-4. **Metrics & Benchmark Engine (`com.daa.metrics` & `com.daa.benchmark`)**
+4. **Metrics & Benchmark Engine (`daa.metrics` & `daa.bench`)**
    - `Metrics` tracks comparisons, current & maximum recursion stack depth, and elapsed nanoseconds (`System.nanoTime()`).
-   - `BenchmarkRunner` runs all algorithms on $n \in \{10^3, 10^4, 10^5, 10^6\}$ across `random`, `sorted`, and `duplicates` inputs, running each case 5 times and saving the median to `results.csv`.
-   - `PlotGenerator` renders high-resolution PNG charts:
-     - `time_vs_n.png`
-     - `depth_vs_n.png`
-     - `ratio_vs_n.png`
+   - `Benchmark` runs all algorithms on $n \in \{10^3, 10^4, 10^5, 10^6\}$ across `random`, `sorted`, and `duplicates` inputs, running each case 5 times and saving the median to `results.csv`.
+   - Automated high-resolution PNG charts: `time_vs_n.png`, `depth_vs_n.png`, `ratio_vs_n.png`.
 
 5. **Bonus Tasks (+15%)**
-   - **Task A (+10%): Deterministic Select (`MedianOfMediansSelect`)** with guaranteed $O(n)$ worst-case time using groups of 5.
-   - **Task B (+5%): Closest Pair of Points in 2D (`ClosestPairOfPoints`)** using $O(n \log n)$ Divide-and-Conquer with 7-point strip check, validated against brute-force $O(n^2)$.
+   - **Task A (+10%): Deterministic Select (`daa.bonus.MedianOfMediansSelect`)** with guaranteed $O(n)$ worst-case time using groups of 5.
+   - **Task B (+5%): Closest Pair of Points in 2D (`daa.bonus.ClosestPairOfPoints`)** using $O(n \log n)$ Divide-and-Conquer with 7-point strip check, validated against brute-force $O(n^2)$.
 
 ---
 
@@ -47,9 +44,10 @@ This repository implements high-performance, memory-safe Divide-and-Conquer algo
 ├── .idea/
 │   └── runConfigurations/      # Pre-configured IntelliJ IDEA Run Configurations
 │       ├── All_Tests.xml       # Run all JUnit 5 tests
-│       └── BenchmarkRunner.xml # Run benchmark & generate plots
+│       └── Main.xml            # Run benchmark & generate plots
 ├── DAA Assignmet.iml           # IntelliJ IDEA module definition
-├── build.gradle                # Gradle build script (Java 21 toolchain)
+├── build.gradle                # Gradle build script (Java 21 / 25 toolchain)
+├── gradle.properties           # Gradle JVM configuration
 ├── pom.xml                     # Maven build script
 ├── lib/                        # Bundled standalone JUnit 5 & Jupiter jars
 ├── results.csv                 # Benchmark measurements
@@ -59,29 +57,36 @@ This repository implements high-performance, memory-safe Divide-and-Conquer algo
 ├── REPORT.md                   # Full theoretical and experimental report
 ├── README.md                   # Project documentation & run guide
 └── src/
-    ├── main/java/com/daa/
+    ├── main/java/daa/
+    │   ├── Main.java
+    │   ├── algorithms/
+    │   │   ├── InsertionSort.java
+    │   │   ├── MergeSort.java
+    │   │   ├── Partition.java
+    │   │   ├── QuickSelect.java
+    │   │   ├── QuickSort.java
+    │   │   └── Sorter.java
+    │   ├── bench/
+    │   │   └── Benchmark.java
     │   ├── bonus/
     │   │   ├── ClosestPairOfPoints.java
     │   │   └── MedianOfMediansSelect.java
-    │   ├── benchmark/
-    │   │   ├── BenchmarkRunner.java
-    │   │   └── PlotGenerator.java
     │   ├── metrics/
-    │   │   └── Metrics.java
-    │   ├── select/
-    │   │   └── QuickSelect.java
-    │   └── sort/
-    │       ├── MergeSort.java
-    │       └── QuickSort.java
-    └── test/java/com/daa/
+    │   │   ├── CsvWriter.java
+    │   │   ├── Metrics.java
+    │   │   └── Result.java
+    │   └── util/
+    │       ├── ArrayUtils.java
+    │       └── InputType.java
+    └── test/java/daa/
         ├── AllTestsRunner.java
-        ├── bonus/
-        │   └── BonusTasksTest.java
-        ├── select/
-        │   └── QuickSelectTest.java
-        └── sort/
-            ├── MergeSortTest.java
-            └── QuickSortTest.java
+        ├── algorithms/
+        │   ├── InsertionSortTest.java
+        │   ├── MergeSortTest.java
+        │   ├── QuickSelectTest.java
+        │   └── QuickSortTest.java
+        └── bonus/
+            └── BonusTasksTest.java
 ```
 
 ---

@@ -1,6 +1,6 @@
-package com.daa.sort;
+package daa.algorithms;
 
-import com.daa.metrics.Metrics;
+import daa.metrics.Metrics;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +26,11 @@ public class MergeSortTest {
             Arrays.sort(expected);
             Metrics metrics = MergeSort.sort(actual);
 
-            assertArrayEquals(expected, actual, "MergeSort output must match Arrays.sort for random array iteration " + i);
-            if (size > MergeSort.INSERTION_SORT_CUTOFF) {
-                assertTrue(metrics.getMaxDepth() > 0, "Recursion depth must be > 0 for size > 15");
+            assertArrayEquals(expected, actual);
+            if (size > MergeSort.CUTOFF) {
+                assertTrue(metrics.getMaxDepth() > 0);
             }
-            assertTrue(metrics.getComparisons() > 0, "Comparisons must be tracked");
+            assertTrue(metrics.getComparisons() > 0);
         }
     }
 
@@ -103,6 +103,6 @@ public class MergeSortTest {
 
         Metrics metrics = MergeSort.sort(a);
         assertArrayEquals(expected, a);
-        assertEquals(0, metrics.getMaxDepth(), "Cutoff <= 15 should not recurse further in mergeSort");
+        assertEquals(0, metrics.getMaxDepth());
     }
 }

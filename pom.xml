@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.daa</groupId>
+    <groupId>daa</groupId>
     <artifactId>daa-assignment1</artifactId>
     <version>1.0.0</version>
     <name>DAA Assignment 1 - Fast Sorting and Selection Engine</name>
@@ -41,7 +41,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.daa.benchmark.BenchmarkRunner</mainClass>
+                    <mainClass>daa.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

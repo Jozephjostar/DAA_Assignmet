@@ -1,4 +1,4 @@
-package com.daa.bonus;
+package daa.bonus;
 
 import java.util.ArrayList;
 import java.util.Arrays;

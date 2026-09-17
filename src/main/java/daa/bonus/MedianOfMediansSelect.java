@@ -1,7 +1,7 @@
-package com.daa.bonus;
+package daa.bonus;
 
-import com.daa.metrics.Metrics;
-import com.daa.sort.MergeSort;
+import daa.algorithms.InsertionSort;
+import daa.metrics.Metrics;
 
 public class MedianOfMediansSelect {
 
@@ -39,7 +39,7 @@ public class MedianOfMediansSelect {
     private static int getMedianOfMedians(int[] a, int l, int r, Metrics metrics) {
         int n = r - l + 1;
         if (n <= 5) {
-            MergeSort.insertionSort(a, l, r, metrics);
+            InsertionSort.sort(a, l, r, metrics);
             return a[l + n / 2];
         }
 
@@ -47,7 +47,7 @@ public class MedianOfMediansSelect {
         for (int i = 0; i < numGroups; i++) {
             int subL = l + i * 5;
             int subR = Math.min(subL + 4, r);
-            MergeSort.insertionSort(a, subL, subR, metrics);
+            InsertionSort.sort(a, subL, subR, metrics);
             swap(a, l + i, subL + (subR - subL) / 2);
         }
 

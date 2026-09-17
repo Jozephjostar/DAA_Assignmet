@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group = 'com.daa'
+group = 'daa'
 version = '1.0.0'
 description = 'DAA Assignment 1 - Divide and Conquer & Asymptotic Notations'
 
@@ -20,7 +20,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.daa.benchmark.BenchmarkRunner'
+    mainClass = 'daa.Main'
 }
 
 tasks.named('test') {

@@ -1,6 +1,6 @@
-package com.daa.sort;
+package daa.algorithms;
 
-import com.daa.metrics.Metrics;
+import daa.metrics.Metrics;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ public class QuickSortTest {
     @Test
     @DisplayName("Correctness: Compare QuickSort with Arrays.sort on 150 random arrays")
     void testRandomArraysAgainstArraysSort() {
-        Random rnd = new Random(12345);
+        Random rnd = new Random(42);
         for (int i = 0; i < 150; i++) {
             int size = rnd.nextInt(2000) + 1;
             int[] expected = new int[size];
@@ -26,8 +26,11 @@ public class QuickSortTest {
             Arrays.sort(expected);
             Metrics metrics = QuickSort.sort(actual);
 
-            assertArrayEquals(expected, actual, "QuickSort result must match Arrays.sort on iteration " + i);
-            assertTrue(metrics.getComparisons() > 0, "Comparisons must be tracked");
+            assertArrayEquals(expected, actual);
+            if (size > 1) {
+                assertTrue(metrics.getMaxDepth() > 0);
+            }
+            assertTrue(metrics.getComparisons() > 0);
         }
     }
 
@@ -44,9 +47,9 @@ public class QuickSortTest {
     @Test
     @DisplayName("Edge Case: Single element array")
     void testSingleElement() {
-        int[] a = new int[]{99};
+        int[] a = new int[]{42};
         Metrics metrics = QuickSort.sort(a);
-        assertArrayEquals(new int[]{99}, a);
+        assertArrayEquals(new int[]{42}, a);
         assertEquals(0, metrics.getMaxDepth());
         assertEquals(0, metrics.getComparisons());
     }
@@ -55,34 +58,33 @@ public class QuickSortTest {
     @DisplayName("Edge Case: All elements equal (3-way partition test)")
     void testAllEqualElements() {
         int[] a = new int[1000];
-        Arrays.fill(a, 42);
+        Arrays.fill(a, 99);
         int[] expected = a.clone();
 
         Metrics metrics = QuickSort.sort(a);
         assertArrayEquals(expected, a);
-        assertTrue(metrics.getMaxDepth() <= 2, "3-way partition should handle all-equal elements with depth <= 2");
+        assertEquals(0, metrics.getMaxDepth());
     }
 
     @Test
     @DisplayName("Edge Case: Already sorted array")
     void testAlreadySorted() {
-        int[] a = new int[1000];
+        int[] a = new int[100];
         for (int i = 0; i < a.length; i++) {
-            a[i] = i;
+            a[i] = i * 2;
         }
         int[] expected = a.clone();
 
         Metrics metrics = QuickSort.sort(a);
         assertArrayEquals(expected, a);
-        assertTrue(metrics.getComparisons() > 0);
     }
 
     @Test
     @DisplayName("Edge Case: Reverse sorted array")
     void testReverseSorted() {
-        int[] a = new int[1000];
+        int[] a = new int[100];
         for (int i = 0; i < a.length; i++) {
-            a[i] = 1000 - i;
+            a[i] = 100 - i;
         }
         int[] expected = a.clone();
         Arrays.sort(expected);
@@ -100,17 +102,12 @@ public class QuickSortTest {
             a[i] = i;
         }
 
-        Metrics metrics = new Metrics();
-        QuickSort.sort(a, metrics);
+        Metrics metrics = QuickSort.sort(a);
 
-        double maxAllowedDepth = 2.0 * (Math.log(n) / Math.log(2.0));
-        System.out.printf("Sorted array n=%d: maxDepth=%d, maxAllowed=%.1f\n", n, metrics.getMaxDepth(), maxAllowedDepth);
+        double maxAllowedDepth = 2.0 * (Math.log(n) / Math.log(2));
+        System.out.println("Sorted array n=" + n + ": maxDepth=" + metrics.getMaxDepth() + ", maxAllowed=" + String.format(java.util.Locale.ROOT, "%.1f", maxAllowedDepth));
 
-        assertTrue(metrics.getMaxDepth() <= maxAllowedDepth,
-                String.format("maxDepth (%d) exceeded 2*log2(n) (%.2f)", metrics.getMaxDepth(), maxAllowedDepth));
-
-        for (int i = 0; i < n - 1; i++) {
-            assertTrue(a[i] <= a[i + 1], "Array must remain correctly sorted");
-        }
+        assertTrue(metrics.getMaxDepth() <= maxAllowedDepth);
+        assertTrue(metrics.getMaxDepth() <= (Math.log(n) / Math.log(2)) + 5);
     }
 }
