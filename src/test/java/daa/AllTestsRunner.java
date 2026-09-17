@@ -25,6 +25,7 @@ public class AllTestsRunner {
         summary.printTo(new PrintWriter(System.out));
 
         if (summary.getTotalFailureCount() > 0) {
+            summary.printFailuresTo(new PrintWriter(System.err, true));
             System.exit(1);
         } else {
             System.out.println("ALL TESTS PASSED SUCCESSFULLY!");
