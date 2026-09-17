@@ -192,3 +192,4 @@ In contrast, QuickSelect chooses a random pivot in $O(1)$ time and averages $\ap
 ## 9. Conclusion
 
 Theoretical bounds for MergeSort ($\Theta(n \log n)$), QuickSort ($\Theta(n \log n)$), and QuickSelect ($\Theta(n)$) have been confirmed empirically. Memory reuse, bounded recursion depth, and 3-way partitioning ensure robust and optimal real-world performance.
+.

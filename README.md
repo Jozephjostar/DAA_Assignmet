@@ -94,3 +94,4 @@ The test suite contains **26 unit tests** covering:
 - [x] 3 generated plots: `time_vs_n.png`, `depth_vs_n.png`, `ratio_vs_n.png`.
 - [x] Detailed analysis in `REPORT.md`.
 - [x] Git history with feature branches and `v1.0` tag on `main`.
+.
