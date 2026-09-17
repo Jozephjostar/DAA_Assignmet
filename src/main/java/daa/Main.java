@@ -12,6 +12,5 @@ public final class Main {
         Benchmark benchmark = new Benchmark();
         List<Result> results = benchmark.run();
         CsvWriter.write(Path.of("results.csv"), results);
-        Benchmark.generatePlots(results, Path.of("."));
     }
 }

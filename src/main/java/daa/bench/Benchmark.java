@@ -10,14 +10,11 @@ import daa.metrics.Result;
 import daa.util.ArrayUtils;
 import daa.util.InputType;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public final class Benchmark {
     private static final int[] SIZES = {1_000, 10_000, 100_000, 1_000_000};
@@ -76,130 +73,5 @@ public final class Benchmark {
         }
         Arrays.sort(runs, Comparator.comparingDouble(Result::timeMs));
         return runs[RUNS / 2];
-    }
-
-    public static void generatePlots(List<Result> results, Path dir) {
-        plotMetric(results, dir.resolve("time_vs_n.png"), "Execution Time vs N", "Time (ms)", r -> r.timeMs());
-        plotMetric(results, dir.resolve("depth_vs_n.png"), "Max Recursion Depth vs N", "Depth", r -> (double) r.maxDepth());
-        plotMetric(results, dir.resolve("ratio_vs_n.png"), "Asymptotic Ratio vs N", "Ratio", r -> {
-            if ("QuickSelect".equals(r.algorithm())) {
-                return (double) r.comparisons() / r.n();
-            } else {
-                return (double) r.comparisons() / (r.n() * (Math.log(r.n()) / Math.log(2)));
-            }
-        });
-    }
-
-    private interface ValueExtractor {
-        double extract(Result r);
-    }
-
-    private static void plotMetric(List<Result> results, Path file, String title, String yLabel, ValueExtractor extractor) {
-        int w = 900;
-        int h = 600;
-        int padL = 90;
-        int padR = 190;
-        int padT = 60;
-        int padB = 60;
-
-        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = img.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, w, h);
-
-        double minY = 0.0;
-        double maxY = 1.0;
-        for (Result r : results) {
-            double v = extractor.extract(r);
-            if (v > maxY) maxY = v;
-        }
-        maxY *= 1.15;
-
-        g.setColor(new Color(230, 230, 230));
-        for (int i = 0; i <= 5; i++) {
-            int y = padT + (h - padT - padB) * i / 5;
-            g.drawLine(padL, y, w - padR, y);
-            double val = maxY - (maxY - minY) * i / 5;
-            g.setColor(Color.GRAY);
-            g.drawString(String.format(Locale.ROOT, "%.1f", val), 15, y + 5);
-            g.setColor(new Color(230, 230, 230));
-        }
-
-        g.setColor(Color.BLACK);
-        g.drawLine(padL, h - padB, w - padR, h - padB);
-        g.drawLine(padL, padT, padL, h - padB);
-
-        g.setFont(new Font("SansSerif", Font.BOLD, 16));
-        g.drawString(title, padL, 35);
-        g.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        g.drawString("Input size n", w / 2 - 30, h - 20);
-
-        int[] xCoords = new int[SIZES.length];
-        for (int i = 0; i < SIZES.length; i++) {
-            xCoords[i] = padL + (w - padL - padR) * i / (SIZES.length - 1);
-            g.setColor(Color.DARK_GRAY);
-            g.drawString(String.valueOf(SIZES[i]), xCoords[i] - 15, h - padB + 20);
-        }
-
-        Map<String, List<Result>> series = new LinkedHashMap<>();
-        for (Result r : results) {
-            String key = r.algorithm() + " (" + r.input() + ")";
-            series.computeIfAbsent(key, k -> new ArrayList<>()).add(r);
-        }
-
-        Color[] colors = {
-                new Color(31, 119, 180), new Color(255, 127, 14), new Color(44, 160, 44),
-                new Color(214, 39, 40), new Color(148, 103, 189), new Color(140, 86, 75),
-                new Color(227, 119, 194), new Color(127, 127, 127), new Color(188, 189, 34),
-                new Color(23, 190, 207), new Color(50, 50, 150), new Color(150, 50, 50)
-        };
-
-        int colorIdx = 0;
-        int legY = padT + 20;
-
-        for (Map.Entry<String, List<Result>> entry : series.entrySet()) {
-            Color col = colors[colorIdx % colors.length];
-            colorIdx++;
-            g.setColor(col);
-
-            List<Point> pts = new ArrayList<>();
-            for (Result r : entry.getValue()) {
-                int sIdx = -1;
-                for (int i = 0; i < SIZES.length; i++) {
-                    if (SIZES[i] == r.n()) {
-                        sIdx = i;
-                        break;
-                    }
-                }
-                if (sIdx != -1) {
-                    int px = xCoords[sIdx];
-                    double val = extractor.extract(r);
-                    int py = (int) ((h - padB) - (val - minY) / (maxY - minY) * (h - padT - padB));
-                    pts.add(new Point(px, py));
-                }
-            }
-
-            g.setStroke(new BasicStroke(2.0f));
-            for (int i = 0; i < pts.size() - 1; i++) {
-                g.drawLine(pts.get(i).x, pts.get(i).y, pts.get(i + 1).x, pts.get(i + 1).y);
-            }
-            for (Point p : pts) {
-                g.fillOval(p.x - 4, p.y - 4, 8, 8);
-            }
-
-            g.fillRect(w - padR + 15, legY - 10, 14, 14);
-            g.setColor(Color.BLACK);
-            g.drawString(entry.getKey(), w - padR + 35, legY + 2);
-            legY += 22;
-        }
-
-        g.dispose();
-        try {
-            ImageIO.write(img, "png", file.toFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
