@@ -26,3 +26,28 @@ application {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.register('daa.Main.main()', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'daa.Main'
+}
+
+tasks.register('daa.AllTestsRunner.main()', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'daa.AllTestsRunner'
+}
+
+tasks.register('Main.main()', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'daa.Main'
+}
+
+tasks.register('AllTestsRunner.main()', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'daa.AllTestsRunner'
+}
+
+tasks.register('runAllTests', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'daa.AllTestsRunner'
+}

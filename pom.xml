@@ -13,6 +13,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <exec.mainClass>daa.Main</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -47,8 +48,17 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>daa.Main</mainClass>
+                    <mainClass>${exec.mainClass}</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>test-runner</id>
+                        <configuration>
+                            <mainClass>daa.AllTestsRunner</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
