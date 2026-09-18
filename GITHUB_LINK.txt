@@ -1,8 +1,1 @@
-GitHub Repository: https://github.com/Jozephjostar/DAA_Assignmet
-Branch: main
-Release Tag: v1.0
-
-Student: Nursultan Maratov
-Course: Design and Analysis of Algorithms (Assignment 1)
-Instructor: Taubakabyl Nurlybek
-Date: September 2026
+https://github.com/Jozephjostar/DAA_Assignmet
